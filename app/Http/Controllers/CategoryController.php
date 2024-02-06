@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -20,9 +21,13 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
-        //
+        $validated=$request->validated();
+        $category=Category::create($validated);
+         return response()->json([
+            "success"=>true
+        ]);
     }
 
     /**
@@ -44,8 +49,12 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Category $category)
+
     {
-        //
+        $category->delete();
+        return response()->json([
+            "success"=>true
+        ]);
     }
 }

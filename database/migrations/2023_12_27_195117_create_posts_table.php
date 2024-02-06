@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string("title",75);
             $table->string("metaTitle",100)->nullable();
             $table->string("slug",100)->unique();
-            $table->tinyText("summary")->nullable();
+            $table->string("summary",300)->nullable();
             $table->tinyInteger("published")->default(0);
             $table->date("published_at")->nullable();
             $table->text("content");

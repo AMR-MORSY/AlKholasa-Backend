@@ -32,11 +32,28 @@ class PostRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
+    private function slug($string, $separator = '-') {
+        if (is_null($string)) {
+            return "";
+        }
+    
+        $string = trim($string);
+    
+        $string = mb_strtolower($string, "UTF-8");;
+    
+        $string = preg_replace("/[^a-z0-9_\sءاأإآؤئبتثجحخدذرزسشصضطظعغفقكلمنهويةى]#u/", "", $string);
+    
+        $string = preg_replace("/[\s-]+/", " ", $string);
+    
+        $string = preg_replace("/[\s_]/", $separator, $string);
+    
+        return $string;
+    }
 
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'slug' => Str::slug($this->title),
+            'slug' => $this->slug($this->title),
         ]);
     }
     public function rules(): array
@@ -47,7 +64,7 @@ class PostRequest extends FormRequest
             "title" => "required|string|max:75",
             "metaTitle" => "required|string|max:100",
             "slug" => ["required","string","max:100",Rule::unique("posts")->ignore($this->post)],
-            "summary" => "required|string|max:250",
+            "summary" => "required|string|max:300",
             "content" => "required|string",
             "published"=>["nullable",Rule::in([1,0])],
 

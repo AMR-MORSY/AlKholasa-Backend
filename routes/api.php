@@ -2,7 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PostController;
+use App\Http\Controllers\Admin\PostController;
+
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Auth\RegisteredUserController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\UsersPostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,8 +67,14 @@ Route::apiResources([
     "categories"=>CategoryController::class
 ]);
 
+Route::apiResource("users/posts",UsersPostController::class)->scoped([
+    "post"=>"slug"
+]);
+
 
  Route::post("/posts/update/{post}",[PostController::class,"update"]);
-
+ Route::post("/content/update/{post_content}",[PostController::class,"update"])->name('content.update');
+ Route::post("/content",[PostController::class,"storePostContent"])->name('content.store');
+ Route::post('/content_image/{post}',[PostController::class,'storeContentImage'])->name('content_image.store');
 
 

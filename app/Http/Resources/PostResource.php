@@ -32,9 +32,8 @@ class PostResource extends JsonResource
             "published_at"=>$this->published_at,
             "content"=>$this->content,
             "views"=>$this->views,
-            "image"=>$this->image,
             "comments"=>PostComentResource::collection($this->post_comments),
-            "images"=>ImageResource::collection($this->images),
+            "image"=>new ImageResource($this->image),
 
 
         ];
